@@ -281,20 +281,3 @@ export default function App() {
     </div>
   );
 }
-```
-
-# Cara Pakai
-
-1. Buka file:
-
-```text
-src/App.jsx
-```
-
-2. Hapus semua isi lama.
-
-3. Paste kode di atas.
-
-4. Upload ulang ke GitHub.
-
-5. Redeploy di Vercel.
