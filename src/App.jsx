@@ -288,17 +288,17 @@ useEffect(() => {
             </div>
 
             <video
-                 src={selected.video}
-                 controls
-                 autoPlay
-                 muted
-                 loop
-                 playsInline
-                 style={{
-                 width: "100%",
-                 maxHeight: "80vh",
-               }}
-           />
+  src={selected.video}
+  controls
+  autoPlay
+  muted
+  loop
+  playsInline
+  style={{
+    width: "100%",
+    maxHeight: "80vh",
+  }}
+/>
           </div>
         </div>
       )}
