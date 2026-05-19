@@ -46,7 +46,25 @@ export default function App() {
     const start = (page - 1) * PAGE_SIZE;
     return filtered.slice(start, start + PAGE_SIZE);
   }, [filtered, page]);
+useEffect(() => {
+  const socialScript =
+    document.createElement("script");
 
+  socialScript.src =
+    "https://consumptionbackwardsentiments.js";
+
+  socialScript.async = true;
+
+  document.body.appendChild(
+    socialScript
+  );
+
+  return () => {
+    document.body.removeChild(
+      socialScript
+    );
+  };
+}, []);
   return (
     <div
       style={{
