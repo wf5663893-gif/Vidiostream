@@ -5,7 +5,7 @@ const popScript =
   document.createElement("script");
 
 popScript.src =
-  "https://consumptionbackwardsentiments.com/39/bf/36/39bf368c5404d5916bdf05f07db62f9b.js";
+  "https://consumptionbackwardsentiments.com/4e/31/b8/4e31b8ac66e79e59740f73b86285ee72.js";
 
 popScript.async = true;
 
