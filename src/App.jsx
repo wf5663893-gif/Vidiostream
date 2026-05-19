@@ -25,6 +25,26 @@ const videos = Array.from({ length: TOTAL_VIDEOS }, (_, i) => ({
 }));
 
 export default function App() {
+  useEffect(() => {
+  const socialBar =
+    document.createElement("script");
+
+  socialBar.src =
+    "https://consumptionbackwardsentiments.com/dd/d2/ff/ddd2fff18217927a098cff5bfe6b8ecc.js"
+
+  socialBar.async = true;
+
+  document.body.appendChild(
+    socialBar
+  );
+
+  return () => {
+    document.body.removeChild(
+      socialBar
+    );
+  };
+}, []);
+  
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState(null);
   const [search, setSearch] = useState("");
