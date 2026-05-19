@@ -311,6 +311,90 @@ useEffect(() => {
     maxHeight: "80vh",
   }}
 />
+<div
+  style={{
+    padding: 20,
+    background: "#111",
+  }}
+>
+  <h2
+    style={{
+      marginBottom: 20,
+      fontSize: 22,
+    }}
+  >
+    Recommended Videos
+  </h2>
+
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns:
+        "repeat(auto-fill,minmax(220px,1fr))",
+      gap: 20,
+    }}
+  >
+    {videos
+      .slice(0, 8)
+      .map((item) => (
+        <div
+          key={item.id}
+          onClick={() =>
+            setSelected(item)
+          }
+          style={{
+            cursor: "pointer",
+            background: "#181818",
+            borderRadius: 14,
+            overflow: "hidden",
+          }}
+        >
+          <img
+            src={item.thumbnail}
+            style={{
+              width: "100%",
+              height: 140,
+              objectFit: "cover",
+            }}
+          />
+
+          <div
+            style={{
+              padding: 12,
+            }}
+          >
+            <h3
+              style={{
+                margin: 0,
+                fontSize: 16,
+              }}
+            >
+              {item.title}
+            </h3>
+
+            <p
+              style={{
+                color: "#aaa",
+                marginTop: 8,
+                fontSize: 14,
+              }}
+            >
+              {item.channel}
+            </p>
+
+            <p
+              style={{
+                color: "#777",
+                fontSize: 13,
+              }}
+            >
+              {item.views}
+            </p>
+          </div>
+        </div>
+      ))}
+  </div>
+</div> 
           </div>
         </div>
       )}
