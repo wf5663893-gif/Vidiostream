@@ -5,14 +5,9 @@ const PAGE_SIZE = 20;
 
 const categories = [
   "Trending",
-  "Netflix",
   "Anime",
-  "Action",
   "Gaming",
-  "Live",
-  "Music",
-  "Sports",
-  "News",
+  "18+",
 ];
 
 const videos = Array.from({ length: TOTAL_VIDEOS }, (_, i) => ({
