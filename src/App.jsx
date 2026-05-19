@@ -1,6 +1,5 @@
 
-import { useMemo, useState } from "react";
-
+import { useMemo, useState, useEffect } from "react";
 const TOTAL_VIDEOS = 200;
 const PAGE_SIZE = 20;
 
@@ -9,7 +8,6 @@ const categories = [
   "Netflix",
   "Anime",
   "Action",
-  "TikTok",
   "Gaming",
   "Live",
   "Music",
@@ -51,7 +49,6 @@ useEffect(() => {
     document.createElement("script");
 
   socialScript.src =
-    "https://consumptionbackwardsentiments.js";
 
   socialScript.async = true;
 
