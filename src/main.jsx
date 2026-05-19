@@ -1,17 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
 const popScript =
   document.createElement("script");
 
 popScript.src =
-  "<script src="https://consumptionbackwardsentiments.com/88/b0/d5/88b0d520ba8ee78e027a311e684bc15e.js"></script>
-";
+  "https://consumptionbackwardsentiments.com/39/bf/36/39bf368c5404d5916bdf05f07db62f9b.js";
 
 popScript.async = true;
 
 document.body.appendChild(popScript);
-import App from './App.jsx'
-
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <App />
