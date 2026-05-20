@@ -246,43 +246,51 @@ useEffect(() => {
   ))}
 </div>
         <div
+  style=<div
   style={{
     display: "flex",
     justifyContent: "center",
     gap: 10,
     paddingBottom: 40,
+    flexWrap: "wrap",
   }}
 >
-  {Array.from(
-    { length: 10 },
-    (_, i) => (
-      <button
-        key={i}
-        onClick={() =>
-          setPage(i + 1)
-        }
-        style={{
-          width: 40,
-          height: 40,
-          borderRadius: 10,
-          border: "none",
-          background:
-            page === i + 1
-              ? "#ffcc00"
-              : "#222",
-          color:
-            page === i + 1
-              ? "black"
-              : "white",
-          cursor: "pointer",
-        }}
-      >
-        {i + 1}
-      </button>
-    )
-  )}
+  {Array.from({ length: 10 }, (_, i) => (
+    <button
+      key={i}
+      onClick={() => setPage(i + 1)}
+      style={{
+        width: 40,
+        height: 40,
+        borderRadius: 10,
+        border: "none",
+        background:
+          page === i + 1 ? "#ffcc00" : "#222",
+        color:
+          page === i + 1 ? "black" : "white",
+        cursor: "pointer",
+      }}
+    >
+      {i + 1}
+    </button>
+  ))}
+
+  <button
+    onClick={() => setPage(page + 1)}
+    style={{
+      padding: "0 20px",
+      borderRadius: 10,
+      border: "none",
+      background: "#e50914",
+      color: "white",
+      cursor: "pointer",
+      fontWeight: "bold",
+    }}
+  >
+    Next
+  </button>
 </div>
-     
+    
       {selected && (
         <div
           style={{
