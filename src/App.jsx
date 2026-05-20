@@ -1,5 +1,15 @@
 
 import { useMemo, useState, useEffect } from "react";
+import { db } from "./firebase";
+
+import {
+  doc,
+  setDoc,
+  onSnapshot,
+  collection,
+  addDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 const TOTAL_VIDEOS = 200;
 const PAGE_SIZE = 20;
 
@@ -48,6 +58,15 @@ export default function App() {
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState(null);
   const [search, setSearch] = useState("");
+  const [likes, setLikes] =
+  useState({});
+
+const [comments, setComments] =
+  useState([]);
+
+const [newComment,
+setNewComment] =
+  useState("");
 
   const filtered = useMemo(() => {
     return videos.filter((v) =>
@@ -77,6 +96,46 @@ useEffect(() => {
     );
   };
 }, []);
+  useEffect(() => {
+  if (!selected) return;
+
+  const unsub = onSnapshot(
+    collection(db, "comments"),
+    (snap) => {
+      const list = [];
+
+      snap.forEach((doc) => {
+        const data = doc.data();
+
+        if (
+          data.videoId ===
+          selected.id
+        ) {
+          list.push(data);
+        }
+      });
+
+      setComments(list);
+    }
+  );
+
+  return () => unsub();
+}, [selected]);
+  useEffect(() => {
+  if (!selected) return;
+
+  const unsub = onSnapshot(
+    doc(db, "likes",
+    String(selected.id)),
+    (snap) => {
+      if (snap.exists()) {
+        setLikes(snap.data());
+      }
+    }
+  );
+
+  return () => unsub();
+}, [selected]);
   return (
     <div
       style={{
@@ -349,6 +408,39 @@ useEffect(() => {
     maxHeight: "80vh",
   }}
 />
+            <div
+  style={{
+    padding: 20,
+    display: "flex",
+    gap: 15,
+  }}
+>
+  <button
+    onClick={async () => {
+      const ref = doc(
+        db,
+        "likes",
+        String(selected.id)
+      );
+
+      await setDoc(ref, {
+        count:
+          (likes.count || 0) + 1,
+      });
+    }}
+    style={{
+      background: "#ff0050",
+      border: "none",
+      color: "white",
+      padding: "12px 20px",
+      borderRadius: 999,
+      cursor: "pointer",
+      fontWeight: "bold",
+    }}
+  >
+    ❤️ {likes.count || 0}
+  </button>
+</div>
 <div
   style={{
     padding: 20,
@@ -361,6 +453,78 @@ useEffect(() => {
       fontSize: 22,
     }}
   >
+    <div style={{ padding: 20 }}>
+  <h3>Comments</h3>
+
+  <div
+    style={{
+      display: "flex",
+      gap: 10,
+      marginBottom: 20,
+    }}
+  >
+    <input
+      value={newComment}
+      onChange={(e) =>
+        setNewComment(
+          e.target.value
+        )
+      }
+      placeholder="Write comment..."
+      style={{
+        flex: 1,
+        padding: 12,
+        borderRadius: 10,
+        border: "none",
+      }}
+    />
+
+    <button
+      onClick={async () => {
+        if (!newComment) return;
+
+        await addDoc(
+          collection(
+            db,
+            "comments"
+          ),
+          {
+            videoId:
+              selected.id,
+            text: newComment,
+            createdAt:
+              serverTimestamp(),
+          }
+        );
+
+        setNewComment("");
+      }}
+      style={{
+        background: "#e50914",
+        border: "none",
+        color: "white",
+        padding: "12px 20px",
+        borderRadius: 10,
+      }}
+    >
+      Send
+    </button>
+  </div>
+
+  {comments.map((c, i) => (
+    <div
+      key={i}
+      style={{
+        background: "#222",
+        padding: 12,
+        borderRadius: 10,
+        marginBottom: 10,
+      }}
+    >
+      {c.text}
+    </div>
+  ))}
+</div>
     Recommended Videos
   </h2>
 
