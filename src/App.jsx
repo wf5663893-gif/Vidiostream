@@ -251,25 +251,25 @@ export default function App() {
       </div>
 
       {selected && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(0,0,0,0.95)",
-            overflowY: "auto",
-            zIndex: 999,
-            padding: 20,
-          }}
-        >
-          <div
-            style={{
-              maxWidth: 1200,
-              margin: "0 auto",
-              background: "#181818",
-              borderRadius: 20,
-              overflow: "hidden",
-            }}
-          >
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      background: "rgba(0,0,0,0.95)",
+      overflowY: "auto",
+      zIndex: 999,
+      padding: 20,
+    }}
+  ><div
+  style={{
+    width: "90%",
+    maxWidth: 1200,
+    margin: "0 auto",
+    background: "#181818",
+    borderRadius: 20,
+    overflow: "hidden",
+  }}
+>
             <div
               style={{
                 display: "flex",
