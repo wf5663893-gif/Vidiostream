@@ -169,6 +169,7 @@ useEffect(() => {
           </button>
         ))}
       </div>
+  <div
   style={{
     display: "grid",
     gridTemplateColumns:
@@ -245,8 +246,7 @@ useEffect(() => {
     </div>
   ))}
 </div>
-        <div
-  style=<div
+   <div
   style={{
     display: "flex",
     justifyContent: "center",
