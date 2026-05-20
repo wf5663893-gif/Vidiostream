@@ -260,16 +260,18 @@ export default function App() {
       zIndex: 999,
       padding: 20,
     }}
-  ><div
-  style={{
-    width: "90%",
-    maxWidth: 1200,
-    margin: "0 auto",
-    background: "#181818",
-    borderRadius: 20,
-    overflow: "hidden",
-  }}
->
+  >
+    <div
+      style={{
+        width: "90%",
+        maxWidth: 1200,
+        margin: "0 auto",
+        background: "#181818",
+        borderRadius: 20,
+        overflowY: "auto",
+        maxHeight: "95vh",
+      }}
+    >
             <div
               style={{
                 display: "flex",
@@ -315,9 +317,13 @@ export default function App() {
                     String(selected.id)
                   );
 
-                  await setDoc(ref, {
-                    count: (likes.count || 0) + 1,
-                  });
+                  await setDoc(
+                   ref,
+                 {
+                  count: (likes.count || 0) + 1,
+                 },
+                { merge: true }
+              );
                 }}
                 style={{
                   background: "#ff0050",
