@@ -168,58 +168,119 @@ useEffect(() => {
             {cat}
           </button>
         ))}
-      </div>
-
       <div
   style={{
-    height: "100vh",
-    overflowY: "auto",
-    scrollSnapType: "y proximity",
-    WebkitOverflowScrolling: "touch",
+    display: "grid",
+    gridTemplateColumns:
+      "repeat(auto-fill,minmax(260px,1fr))",
+    gap: 20,
+    padding: 20,
   }}
 >
   {paginated.map((video) => (
     <div
       key={video.id}
       style={{
-        minHeight: "100vh",
-        scrollSnapAlign: "start",
-        position: "relative",
-        background: "black",
+        background: "#181818",
+        borderRadius: 16,
+        overflow: "hidden",
+        cursor: "pointer",
+        transition: "0.2s",
       }}
       onClick={() => setSelected(video)}
     >
-      <video
-        src={video.video}
-        autoPlay
-        muted
-        loop
-        playsInline
-        controls
-        style={{
-          width: "100%",
-          height: "100vh",
-          objectFit: "cover",
-        }}
-      />
+      <div style={{ position: "relative" }}>
+        <img
+          src={video.thumbnail}
+          style={{
+            width: "100%",
+            display: "block",
+          }}
+        />
 
-      <div
-        style={{
-          position: "absolute",
-          bottom: 120,
-          left: 20,
-          color: "white",
-          zIndex: 2,
-        }}
-      >
-        <h2>{video.title}</h2>
+        <span
+          style={{
+            position: "absolute",
+            right: 10,
+            bottom: 10,
+            background:
+              "rgba(0,0,0,0.8)",
+            padding: "4px 8px",
+            borderRadius: 6,
+            fontSize: 12,
+          }}
+        >
+          {video.duration}
+        </span>
+      </div>
 
-        <p>{video.channel}</p>
+      <div style={{ padding: 14 }}>
+        <h3
+          style={{
+            margin: 0,
+            fontSize: 18,
+          }}
+        >
+          {video.title}
+        </h3>
 
-        <p>{video.views}</p>
+        <p
+          style={{
+            color: "#aaa",
+            marginTop: 8,
+          }}
+        >
+          {video.channel}
+        </p>
+
+        <p
+          style={{
+            color: "#777",
+            fontSize: 14,
+          }}
+        >
+          {video.views}
+        </p>
       </div>
     </div>
   ))}
+</div>
+        <div
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    gap: 10,
+    paddingBottom: 40,
+  }}
+>
+  {Array.from(
+    { length: 10 },
+    (_, i) => (
+      <button
+        key={i}
+        onClick={() =>
+          setPage(i + 1)
+        }
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 10,
+          border: "none",
+          background:
+            page === i + 1
+              ? "#ffcc00"
+              : "#222",
+          color:
+            page === i + 1
+              ? "black"
+              : "white",
+          cursor: "pointer",
+        }}
+      >
+        {i + 1}
+      </button>
+    )
+  )}
 </div>
      
       {selected && (
