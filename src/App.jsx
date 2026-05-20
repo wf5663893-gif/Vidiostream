@@ -44,14 +44,16 @@ export default function App() {
     return () => {
       document.body.removeChild(socialBar);
     };
-  }, []);
+  }, 
+[]);
 
   const filtered = useMemo(() => {
     return videos.filter((v) =>
       v.title.toLowerCase().includes(search.toLowerCase())
     );
-  }, [search]);
-
+  },
+                           
+ [search]);
   const paginated = useMemo(() => {
     const start = (page - 1) * PAGE_SIZE;
     return filtered.slice(start, start + PAGE_SIZE);
