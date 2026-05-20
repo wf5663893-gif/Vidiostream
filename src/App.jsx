@@ -78,24 +78,7 @@ setNewComment] =
     const start = (page - 1) * PAGE_SIZE;
     return filtered.slice(start, start + PAGE_SIZE);
   }, [filtered, page]);
-useEffect(() => {
-  const socialScript =
-    document.createElement("script");
 
-  socialScript.src =
-
-  socialScript.async = true;
-
-  document.body.appendChild(
-    socialScript
-  );
-
-  return () => {
-    document.body.removeChild(
-      socialScript
-    );
-  };
-}, []);
   useEffect(() => {
   if (!selected) return;
 
@@ -447,13 +430,7 @@ useEffect(() => {
     background: "#111",
   }}
 >
-  <h2
-    style={{
-      marginBottom: 20,
-      fontSize: 22,
-    }}
-  >
-    <div style={{ padding: 20 }}>
+ <div style={{ padding: 20 }}>
   <h3>Comments</h3>
 
   <div
@@ -484,13 +461,9 @@ useEffect(() => {
         if (!newComment) return;
 
         await addDoc(
-          collection(
-            db,
-            "comments"
-          ),
+          collection(db, "comments"),
           {
-            videoId:
-              selected.id,
+            videoId: selected.id,
             text: newComment,
             createdAt:
               serverTimestamp(),
@@ -525,8 +498,16 @@ useEffect(() => {
     </div>
   ))}
 </div>
-    Recommended Videos
-  </h2>
+
+<h2
+  style={{
+    marginBottom: 20,
+    fontSize: 22,
+    paddingLeft: 20,
+  }}
+>
+  Recommended Videos
+</h2> 
 
   <div
     style={{
