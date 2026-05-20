@@ -1,4 +1,3 @@
-
 import { useMemo, useState, useEffect } from "react";
 import { db } from "./firebase";
 
@@ -10,6 +9,7 @@ import {
   addDoc,
   serverTimestamp,
 } from "firebase/firestore";
+
 const TOTAL_VIDEOS = 200;
 const PAGE_SIZE = 20;
 
@@ -35,38 +35,28 @@ const videos = Array.from({ length: TOTAL_VIDEOS }, (_, i) => ({
 }));
 
 export default function App() {
-  useEffect(() => {
-  const socialBar =
-    document.createElement("script");
-
-  socialBar.src =
-    "https://consumptionbackwardsentiments.com/dd/d2/ff/ddd2fff18217927a098cff5bfe6b8ecc.js"
-
-  socialBar.async = true;
-
-  document.body.appendChild(
-    socialBar
-  );
-
-  return () => {
-    document.body.removeChild(
-      socialBar
-    );
-  };
-}, []);
-  
   const [page, setPage] = useState(1);
   const [selected, setSelected] = useState(null);
   const [search, setSearch] = useState("");
-  const [likes, setLikes] =
-  useState({});
 
-const [comments, setComments] =
-  useState([]);
+  const [likes, setLikes] = useState({});
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
 
-const [newComment,
-setNewComment] =
-  useState("");
+  useEffect(() => {
+    const socialBar = document.createElement("script");
+
+    socialBar.src =
+      "https://consumptionbackwardsentiments.com/dd/d2/ff/ddd2fff18217927a098cff5bfe6b8ecc.js";
+
+    socialBar.async = true;
+
+    document.body.appendChild(socialBar);
+
+    return () => {
+      document.body.removeChild(socialBar);
+    };
+  }, []);
 
   const filtered = useMemo(() => {
     return videos.filter((v) =>
@@ -80,45 +70,43 @@ setNewComment] =
   }, [filtered, page]);
 
   useEffect(() => {
-  if (!selected) return;
+    if (!selected) return;
 
-  const unsub = onSnapshot(
-    collection(db, "comments"),
-    (snap) => {
-      const list = [];
+    const unsub = onSnapshot(
+      collection(db, "comments"),
+      (snap) => {
+        const list = [];
 
-      snap.forEach((doc) => {
-        const data = doc.data();
+        snap.forEach((d) => {
+          const data = d.data();
 
-        if (
-          data.videoId ===
-          selected.id
-        ) {
-          list.push(data);
-        }
-      });
+          if (data.videoId === selected.id) {
+            list.push(data);
+          }
+        });
 
-      setComments(list);
-    }
-  );
-
-  return () => unsub();
-}, [selected]);
-  useEffect(() => {
-  if (!selected) return;
-
-  const unsub = onSnapshot(
-    doc(db, "likes",
-    String(selected.id)),
-    (snap) => {
-      if (snap.exists()) {
-        setLikes(snap.data());
+        setComments(list);
       }
-    }
-  );
+    );
 
-  return () => unsub();
-}, [selected]);
+    return () => unsub();
+  }, [selected]);
+
+  useEffect(() => {
+    if (!selected) return;
+
+    const unsub = onSnapshot(
+      doc(db, "likes", String(selected.id)),
+      (snap) => {
+        if (snap.exists()) {
+          setLikes(snap.data());
+        }
+      }
+    );
+
+    return () => unsub();
+  }, [selected]);
+
   return (
     <div
       style={{
@@ -141,25 +129,7 @@ setNewComment] =
           zIndex: 99,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <div
-            style={{
-              width: 38,
-              height: 38,
-              borderRadius: 10,
-              background: "#e50914",
-              color: "black",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: "bold",
-            }}
-          >
-            V
-          </div>
-
-          <h2 style={{ margin: 0 }}>StreamFlix</h2>
-        </div>
+        <h2>StreamFlix</h2>
 
         <input
           value={search}
@@ -170,18 +140,8 @@ setNewComment] =
             padding: 12,
             borderRadius: 30,
             border: "none",
-            outline: "none",
             background: "#1f1f1f",
             color: "white",
-          }}
-        />
-
-        <div
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: "50%",
-            background: "#333",
           }}
         />
       </header>
@@ -203,152 +163,108 @@ setNewComment] =
               border: "none",
               padding: "10px 18px",
               borderRadius: 999,
-              cursor: "pointer",
-              whiteSpace: "nowrap",
             }}
           >
             {cat}
           </button>
         ))}
       </div>
-  <div
-  style={{
-    display: "grid",
-    gridTemplateColumns:
-      "repeat(auto-fill,minmax(260px,1fr))",
-    gap: 20,
-    padding: 20,
-  }}
->
-  {paginated.map((video) => (
-    <div
-      key={video.id}
-      style={{
-        background: "#181818",
-        borderRadius: 16,
-        overflow: "hidden",
-        cursor: "pointer",
-        transition: "0.2s",
-      }}
-      onClick={() => setSelected(video)}
-    >
-      <div style={{ position: "relative" }}>
-        <img
-          src={video.thumbnail}
-          style={{
-            width: "100%",
-            display: "block",
-          }}
-        />
 
-        <span
-          style={{
-            position: "absolute",
-            right: 10,
-            bottom: 10,
-            background:
-              "rgba(0,0,0,0.8)",
-            padding: "4px 8px",
-            borderRadius: 6,
-            fontSize: 12,
-          }}
-        >
-          {video.duration}
-        </span>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns:
+            "repeat(auto-fill,minmax(260px,1fr))",
+          gap: 20,
+          padding: 20,
+        }}
+      >
+        {paginated.map((video) => (
+          <div
+            key={video.id}
+            onClick={() => setSelected(video)}
+            style={{
+              background: "#181818",
+              borderRadius: 16,
+              overflow: "hidden",
+              cursor: "pointer",
+            }}
+          >
+            <img
+              src={video.thumbnail}
+              style={{
+                width: "100%",
+                height: 200,
+                objectFit: "cover",
+              }}
+            />
+
+            <div style={{ padding: 14 }}>
+              <h3>{video.title}</h3>
+              <p>{video.channel}</p>
+              <p>{video.views}</p>
+            </div>
+          </div>
+        ))}
       </div>
 
-      <div style={{ padding: 14 }}>
-        <h3
-          style={{
-            margin: 0,
-            fontSize: 18,
-          }}
-        >
-          {video.title}
-        </h3>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: 10,
+          paddingBottom: 40,
+          flexWrap: "wrap",
+        }}
+      >
+        {Array.from({ length: 10 }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => setPage(i + 1)}
+            style={{
+              width: 40,
+              height: 40,
+              border: "none",
+              borderRadius: 10,
+              background:
+                page === i + 1 ? "#ffcc00" : "#222",
+              color:
+                page === i + 1 ? "black" : "white",
+            }}
+          >
+            {i + 1}
+          </button>
+        ))}
 
-        <p
+        <button
+          onClick={() => setPage(page + 1)}
           style={{
-            color: "#aaa",
-            marginTop: 8,
+            padding: "0 20px",
+            border: "none",
+            borderRadius: 10,
+            background: "#e50914",
+            color: "white",
           }}
         >
-          {video.channel}
-        </p>
-
-        <p
-          style={{
-            color: "#777",
-            fontSize: 14,
-          }}
-        >
-          {video.views}
-        </p>
+          Next
+        </button>
       </div>
-    </div>
-  ))}
-</div>
-   <div
-  style={{
-    display: "flex",
-    justifyContent: "center",
-    gap: 10,
-    paddingBottom: 40,
-    flexWrap: "wrap",
-  }}
->
-  {Array.from({ length: 10 }, (_, i) => (
-    <button
-      key={i}
-      onClick={() => setPage(i + 1)}
-      style={{
-        width: 40,
-        height: 40,
-        borderRadius: 10,
-        border: "none",
-        background:
-          page === i + 1 ? "#ffcc00" : "#222",
-        color:
-          page === i + 1 ? "black" : "white",
-        cursor: "pointer",
-      }}
-    >
-      {i + 1}
-    </button>
-  ))}
 
-  <button
-    onClick={() => setPage(page + 1)}
-    style={{
-      padding: "0 20px",
-      borderRadius: 10,
-      border: "none",
-      background: "#e50914",
-      color: "white",
-      cursor: "pointer",
-      fontWeight: "bold",
-    }}
-  >
-    Next
-  </button>
-</div>
-    
       {selected && (
         <div
           style={{
             position: "fixed",
             inset: 0,
             background: "rgba(0,0,0,0.95)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            overflowY: "auto",
             zIndex: 999,
+            padding: 20,
           }}
         >
           <div
             style={{
-              width: "90%",
               maxWidth: 1200,
+              margin: "0 auto",
               background: "#181818",
               borderRadius: 20,
               overflow: "hidden",
@@ -359,10 +275,9 @@ setNewComment] =
                 display: "flex",
                 justifyContent: "space-between",
                 padding: 15,
-                borderBottom: "1px solid #222",
               }}
             >
-              <h2 style={{ margin: 0 }}>{selected.title}</h2>
+              <h2>{selected.title}</h2>
 
               <button
                 onClick={() => setSelected(null)}
@@ -371,8 +286,7 @@ setNewComment] =
                   border: "none",
                   padding: "10px 18px",
                   borderRadius: 10,
-                  cursor: "pointer",
-                  fontWeight: "bold",
+                  color: "white",
                 }}
               >
                 Close
@@ -380,204 +294,149 @@ setNewComment] =
             </div>
 
             <video
-  src={selected.video}
-  controls
-  autoPlay
-  muted
-  loop
-  playsInline
-  style={{
-    width: "100%",
-    maxHeight: "80vh",
-  }}
-/>
-            <div
-  style={{
-    padding: 20,
-    display: "flex",
-    gap: 15,
-  }}
->
-  <button
-    onClick={async () => {
-      const ref = doc(
-        db,
-        "likes",
-        String(selected.id)
-      );
-
-      await setDoc(ref, {
-        count:
-          (likes.count || 0) + 1,
-      });
-    }}
-    style={{
-      background: "#ff0050",
-      border: "none",
-      color: "white",
-      padding: "12px 20px",
-      borderRadius: 999,
-      cursor: "pointer",
-      fontWeight: "bold",
-    }}
-  >
-    ❤️ {likes.count || 0}
-  </button>
-</div>
-<div
-  style={{
-    padding: 20,
-    background: "#111",
-  }}
->
- <div style={{ padding: 20 }}>
-  <h3>Comments</h3>
-
-  <div
-    style={{
-      display: "flex",
-      gap: 10,
-      marginBottom: 20,
-    }}
-  >
-    <input
-      value={newComment}
-      onChange={(e) =>
-        setNewComment(
-          e.target.value
-        )
-      }
-      placeholder="Write comment..."
-      style={{
-        flex: 1,
-        padding: 12,
-        borderRadius: 10,
-        border: "none",
-      }}
-    />
-
-    <button
-      onClick={async () => {
-        if (!newComment) return;
-
-        await addDoc(
-          collection(db, "comments"),
-          {
-            videoId: selected.id,
-            text: newComment,
-            createdAt:
-              serverTimestamp(),
-          }
-        );
-
-        setNewComment("");
-      }}
-      style={{
-        background: "#e50914",
-        border: "none",
-        color: "white",
-        padding: "12px 20px",
-        borderRadius: 10,
-      }}
-    >
-      Send
-    </button>
-  </div>
-
-  {comments.map((c, i) => (
-    <div
-      key={i}
-      style={{
-        background: "#222",
-        padding: 12,
-        borderRadius: 10,
-        marginBottom: 10,
-      }}
-    >
-      {c.text}
-    </div>
-  ))}
-</div>
-
-<h2
-  style={{
-    marginBottom: 20,
-    fontSize: 22,
-    paddingLeft: 20,
-  }}
->
-  Recommended Videos
-</h2> 
-
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns:
-        "repeat(auto-fill,minmax(220px,1fr))",
-      gap: 20,
-    }}
-  >
-    {videos
-      .slice(0, 8)
-      .map((item) => (
-        <div
-          key={item.id}
-          onClick={() =>
-            setSelected(item)
-          }
-          style={{
-            cursor: "pointer",
-            background: "#181818",
-            borderRadius: 14,
-            overflow: "hidden",
-          }}
-        >
-          <img
-            src={item.thumbnail}
-            style={{
-              width: "100%",
-              height: 140,
-              objectFit: "cover",
-            }}
-          />
-
-          <div
-            style={{
-              padding: 12,
-            }}
-          >
-            <h3
+              src={selected.video}
+              controls
+              autoPlay
+              muted
+              loop
+              playsInline
               style={{
-                margin: 0,
-                fontSize: 16,
+                width: "100%",
+                maxHeight: "80vh",
               }}
-            >
-              {item.title}
-            </h3>
+            />
 
-            <p
-              style={{
-                color: "#aaa",
-                marginTop: 8,
-                fontSize: 14,
-              }}
-            >
-              {item.channel}
-            </p>
+            <div style={{ padding: 20 }}>
+              <button
+                onClick={async () => {
+                  const ref = doc(
+                    db,
+                    "likes",
+                    String(selected.id)
+                  );
 
-            <p
-              style={{
-                color: "#777",
-                fontSize: 13,
-              }}
-            >
-              {item.views}
-            </p>
-          </div>
-        </div>
-      ))}
-  </div>
-</div> 
+                  await setDoc(ref, {
+                    count: (likes.count || 0) + 1,
+                  });
+                }}
+                style={{
+                  background: "#ff0050",
+                  border: "none",
+                  color: "white",
+                  padding: "12px 20px",
+                  borderRadius: 999,
+                }}
+              >
+                ❤️ {likes.count || 0}
+              </button>
+
+              <div style={{ marginTop: 30 }}>
+                <h3>Comments</h3>
+
+                <div
+                  style={{
+                    display: "flex",
+                    gap: 10,
+                    marginBottom: 20,
+                  }}
+                >
+                  <input
+                    value={newComment}
+                    onChange={(e) =>
+                      setNewComment(e.target.value)
+                    }
+                    placeholder="Write comment..."
+                    style={{
+                      flex: 1,
+                      padding: 12,
+                      borderRadius: 10,
+                      border: "none",
+                    }}
+                  />
+
+                  <button
+                    onClick={async () => {
+                      if (!newComment) return;
+
+                      await addDoc(
+                        collection(db, "comments"),
+                        {
+                          videoId: selected.id,
+                          text: newComment,
+                          createdAt:
+                            serverTimestamp(),
+                        }
+                      );
+
+                      setNewComment("");
+                    }}
+                    style={{
+                      background: "#e50914",
+                      border: "none",
+                      color: "white",
+                      padding: "12px 20px",
+                      borderRadius: 10,
+                    }}
+                  >
+                    Send
+                  </button>
+                </div>
+
+                {comments.map((c, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      background: "#222",
+                      padding: 12,
+                      borderRadius: 10,
+                      marginBottom: 10,
+                    }}
+                  >
+                    {c.text}
+                  </div>
+                ))}
+              </div>
+
+              <h2 style={{ marginTop: 40 }}>
+                Recommended Videos
+              </h2>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns:
+                    "repeat(auto-fill,minmax(220px,1fr))",
+                  gap: 20,
+                }}
+              >
+                {videos.slice(0, 8).map((item) => (
+                  <div
+                    key={item.id}
+                    onClick={() => setSelected(item)}
+                    style={{
+                      cursor: "pointer",
+                      background: "#222",
+                      borderRadius: 14,
+                      overflow: "hidden",
+                    }}
+                  >
+                    <img
+                      src={item.thumbnail}
+                      style={{
+                        width: "100%",
+                        height: 140,
+                        objectFit: "cover",
+                      }}
+                    />
+
+                    <div style={{ padding: 12 }}>
+                      <h3>{item.title}</h3>
+                      <p>{item.channel}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       )}
