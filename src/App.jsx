@@ -168,7 +168,7 @@ useEffect(() => {
             {cat}
           </button>
         ))}
-      <div
+      </div>
   style={{
     display: "grid",
     gridTemplateColumns:
